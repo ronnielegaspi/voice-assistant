@@ -341,7 +341,7 @@ function noop(){}
 //  GEMINI — called directly from browser
 //  No Apps Script needed, no CORS issue
 // ══════════════════════════════════════
-var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 function callGemini(userText, context, onSuccess, onError){
   if(!GEMINI_KEY){(onError||noop)("No Gemini API key in Settings");return;}
