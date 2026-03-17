@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0a0a0a;color:#e8e8e8;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px}
+.app{width:100%;max-width:540px;display:flex;flex-direction:column;gap:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0;margin-bottom:16px}
+.app-title{font-size:13px;font-weight:500;color:#555;letter-spacing:.1em}
+.settings-btn{background:transparent;border:1px solid #1e1e1e;border-radius:7px;color:#555;font-size:12px;padding:5px 11px;cursor:pointer}
+.settings-btn:hover{border-color:#333;color:#888}
+.main{display:flex;flex-direction:column;gap:16px}
+.banner{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;display:none}
+.banner.show{display:block}
+.banner.warn{background:#1a1000;border:1px solid #3a2800;color:#ba8800}
+.banner.warn a{color:#f0b000;cursor:pointer;text-decoration:underline}
+.orb-wrap{display:flex;justify-content:center;padding:8px 0}
+.orb{width:110px;height:110px;border-radius:50%;background:#111;border:1px solid #1e1e1e;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.orb-inner{width:68px;height:68px;border-radius:50%;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:26px}
+.orb.wake-listening .orb-inner{}
+.orb.listening{border-color:#4a9eff;box-shadow:0 0 0 8px rgba(74,158,255,.08)}
+.orb.listening .orb-inner{background:rgba(74,158,255,.15)}
+.orb.ptt{border-color:#ff5a5a;box-shadow:0 0 0 10px rgba(255,90,90,.1);animation:pulse-red 1s ease-in-out infinite}
+.orb.ptt .orb-inner{background:rgba(255,90,90,.18)}
+.orb.thinking{border-color:#9b7eff}
+.orb.thinking .orb-inner{background:rgba(155,126,255,.1);animation:spin-inner 1.2s linear infinite}
+.orb.speaking{border-color:#4aef9b;animation:pulse-green .9s ease-in-out infinite}
+.orb.speaking .orb-inner{background:rgba(74,239,155,.1)}
+.orb.error{border-color:#ef4a4a}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 6px rgba(255,90,90,.08)}50%{box-shadow:0 0 0 18px rgba(255,90,90,.13)}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 6px rgba(74,239,155,.07)}50%{box-shadow:0 0 0 14px rgba(74,239,155,.1)}}
+@keyframes spin-inner{to{transform:rotate(360deg)}}
+.status{text-align:center;font-size:12px;color:#444;min-height:18px}
+.status.active{color:#888}
+.status.error{color:#ef6a6a}
+.ptt-hint{text-align:center;font-size:11px;color:#2d2d2d;min-height:18px;transition:color .15s}
+.ptt-hint.on{color:#ff7a7a}
+.transcript{background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:12px 14px;min-height:44px;font-size:13px;color:#444;line-height:1.5}
+.transcript.live{color:#bbb;border-color:#252525}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;padding-right:2px}
+.chat::-webkit-scrollbar{width:3px}
+.chat::-webkit-scrollbar-thumb{background:#1e1e1e;border-radius:2px}
+.msg{padding:9px 13px;border-radius:9px;font-size:13px;line-height:1.5;max-width:90%}
+.msg.user{background:#12122a;border:1px solid #1e1e3a;color:#8fa8ff;align-self:flex-end}
+.msg.assistant{background:#111;border:1px solid #1e1e1e;color:#ccc;align-self:flex-start}
+.msg.system{background:transparent;border:none;color:#333;font-size:11px;align-self:center;font-style:italic}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.toggle-group{display:flex;gap:12px;align-items:center}
+.toggle-row{display:flex;align-items:center;gap:7px;font-size:11px;color:#444}
+.toggle{position:relative;width:34px;height:18px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:9px;transition:.2s}
+.toggle input:checked~.toggle-track{background:#0d2a4a;border-color:#4a9eff}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:12px;height:12px;background:#444;border-radius:50%;transition:.2s}
+.toggle input:checked~.toggle-thumb{left:18px;background:#4a9eff}
+.btn-sm{background:transparent;border:1px solid #1a1a1a;border-radius:6px;color:#444;font-size:11px;padding:4px 10px;cursor:pointer}
+.btn-sm:hover{border-color:#2a2a2a;color:#666}
+.accounts-strip{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:28px}
+.acct-pill{display:flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;font-size:11px;border:1px solid #1e1e1e;background:#111;color:#555;cursor:pointer;user-select:none}
+.acct-pill.on{border-color:#2a3a2a;background:#0d1f0d;color:#4aef9b}
+.acct-pill.notion.on{border-color:#2a2a3a;background:#0d0d1f;color:#9b7eff}
+.acct-pill .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.panel{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:flex-end;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
+.panel.open{opacity:1;pointer-events:all}
+.panel-box{background:#0e0e0e;border:1px solid #1e1e1e;border-radius:16px 16px 0 0;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;padding:20px 20px 40px}
+.panel-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.panel-title{font-size:14px;font-weight:500}
+.close-btn{background:transparent;border:none;color:#555;font-size:22px;cursor:pointer;line-height:1;padding:2px 6px}
+.section{margin-bottom:22px}
+.section-title{font-size:11px;color:#555;letter-spacing:.08em;margin-bottom:10px;text-transform:uppercase}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field:last-child{margin-bottom:0}
+.field label{font-size:11px;color:#555}
+.input{width:100%;padding:7px 10px;background:#0a0a0a;border:1px solid #222;border-radius:6px;color:#ccc;font-size:12px;font-family:inherit}
+.input:focus{outline:none;border-color:#333}
+.input::placeholder{color:#2a2a2a}
+.save-btn{padding:7px 16px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:6px;color:#4aef9b;font-size:12px;cursor:pointer;font-family:inherit}
+.save-btn:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:10px;color:#333;line-height:1.5}
+.hint a{color:#555;cursor:pointer;text-decoration:underline}
+.account-list{display:flex;flex-direction:column;gap:6px}
+.account-row{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#111;border:1px solid #1a1a1a;border-radius:8px}
+.account-email{font-size:12px;color:#777;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:10px;padding:2px 7px;border-radius:8px;flex-shrink:0}
+.badge.google{background:#0d1f3a;color:#4a9eff;border:1px solid #1a3a5a}
+.badge.notion{background:#1a0d3a;color:#9b7eff;border:1px solid #2a1a5a}
+.remove-btn{background:transparent;border:1px solid #2a1a1a;border-radius:5px;color:#5a3a3a;font-size:10px;padding:2px 7px;cursor:pointer;flex-shrink:0}
+.remove-btn:hover{border-color:#5a2a2a;color:#ef6a6a}
+.add-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px dashed #222;border-radius:8px;color:#555;font-size:12px;cursor:pointer;background:transparent;width:100%;font-family:inherit;margin-top:6px}
+.add-btn:hover{border-color:#333;color:#777}
+.add-form{background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:12px;margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.form-btns{display:flex;gap:8px;margin-top:4px}
+.form-status{font-size:11px;color:#555;margin-top:2px}
+.divider{height:1px;background:#1a1a1a;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <span class="app-title">VOICE ASSISTANT</span>
+    <button class="settings-btn" onclick="openPanel()">Settings ⚙</button>
+  </div>
+  <div class="main">
+    <div class="banner warn" id="banner-url">⚠ Apps Script URL not set. Open <a onclick="openPanel()">Settings</a>.</div>
+    <div class="banner warn" id="banner-key">⚠ Gemini API key not set. Get one at <a onclick="openLink('https://console.anthropic.com')">console.anthropic.com</a> then open <a onclick="openPanel()">Settings</a>.</div>
+    <div>
+      <div style="font-size:10px;color:#333;margin-bottom:6px">Active accounts</div>
+      <div class="accounts-strip" id="accounts-strip"><span style="font-size:11px;color:#2a2a2a">Add accounts in Settings →</span></div>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb" id="orb" onclick="orbClick()">
+        <div class="orb-inner" id="orb-inner">🎙</div>
+      </div>
+    </div>
+    <div class="status" id="status">Tap orb or hold Space to talk</div>
+    <div class="ptt-hint" id="ptt-hint">Hold Space → speak → release when done</div>
+    <div class="transcript" id="transcript">Say "Hey Claude" or tap the orb...</div>
+    <div class="chat" id="chat"></div>
+    <div class="controls">
+      <div class="toggle-group">
+        <div class="toggle-row">
+          <label class="toggle"><input type="checkbox" id="wake-toggle" checked onchange="toggleWake(this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          <span>Hey Claude</span>
+        </div>
+        <div class="toggle-row">
+          <label class="toggle"><input type="checkbox" id="tts-toggle" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          <span>Speak</span>
+        </div>
+      </div>
+      <button class="btn-sm" onclick="clearChat()">Clear</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings panel -->
+<div class="panel" id="panel" onclick="panelBgClick(event)">
+  <div class="panel-box">
+    <div class="panel-hd"><span class="panel-title">Settings</span><button class="close-btn" onclick="closePanel()">×</button></div>
+    <div class="section">
+      <div class="section-title">API Keys</div>
+      <div class="field">
+        <label>Gemini API Key</label>
+        <input class="input" type="password" id="s-claude" placeholder="sk-ant-..." oninput="saveSetting('claude_key',this.value)">
+        <span class="hint">Get yours at <a onclick="openLink('https://console.anthropic.com')">console.anthropic.com</a> → API Keys. Stored in your browser only.</span>
+      </div>
+      <div class="divider"></div>
+      <div class="field" style="margin-top:10px">
+        <label>Apps Script Web App URL</label>
+        <input class="input" id="s-url" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveSetting('script_url',this.value)">
+        <span class="hint">Deploy Code.gs as a Web App → paste the /exec URL here</span>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Google Accounts</div>
+      <div class="account-list" id="google-list"><span style="font-size:11px;color:#333">Set Apps Script URL first</span></div>
+      <button class="add-btn" onclick="addGoogleAccount()">+ Connect Google account</button>
+    </div>
+    <div class="section">
+      <div class="section-title">Notion Workspaces</div>
+      <div class="account-list" id="notion-list"><span style="font-size:11px;color:#333">No workspaces added</span></div>
+      <button class="add-btn" id="add-notion-btn" onclick="showNotionForm()">+ Add Notion workspace</button>
+      <div id="notion-form" style="display:none" class="add-form">
+        <div class="field"><label>Workspace name</label><input class="input" id="nf-name" placeholder="Work, Personal..."></div>
+        <div class="field"><label>Integration token</label><input class="input" id="nf-token" type="password" placeholder="secret_..."><span class="hint">notion.so/my-integrations → Internal Integration Token</span></div>
+        <div class="field"><label>Database ID</label><input class="input" id="nf-dbid" placeholder="32-char ID from Notion URL"></div>
+        <div class="field"><label>Title property name</label><input class="input" id="nf-titleprop" value="Name"></div>
+        <div class="form-btns"><button class="save-btn" id="nf-save" onclick="saveNotion()">Save</button><button class="btn-sm" onclick="hideNotionForm()">Cancel</button></div>
+        <div class="form-status" id="nf-status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Storage ───────────────────────────────────────────────────
+function ls(k){try{return localStorage.getItem("va7_"+k)||""}catch(e){return""}}
+function lsSet(k,v){try{localStorage.setItem("va7_"+k,v)}catch(e){}}
+function saveSetting(k,v){lsSet(k,v.trim());checkBanners();}
+
+var SCRIPT_URL       = ls("script_url");
+var CLAUDE_KEY       = ls("claude_key");
+var googleAccounts   = JSON.parse(ls("google_accounts")||"[]");
+var notionWorkspaces = JSON.parse(ls("notion_workspaces")||"[]");
+var activeGoogle     = googleAccounts.map(function(a){return a.id});
+var activeNotion     = notionWorkspaces.map(function(w){return w.id});
+var history          = [];
+
+// ── Voice state ───────────────────────────────────────────────
+var appState     = "idle"; // idle | wake | listening | ptt | thinking | speaking | error
+var wakeRec      = null;
+var mainRec      = null;
+var wakeEnabled  = true;
+var spaceHeld    = false;  // is Space currently held down?
+var spaceReleased = false; // was Space released while recording?
+var captured     = "";     // transcript built during current session
+var silTimer     = null;
+
+var WAKE = ["hey claude","hey clod","hey cloud","hey cloth"];
+
+// ── Boot ──────────────────────────────────────────────────────
+window.onload = function(){
+  document.getElementById("s-url").value    = ls("script_url");
+  document.getElementById("s-claude").value = ls("claude_key");
+  checkBanners();
+  renderStrip();
+  renderPanel();
+  if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){
+    setStatus("Use Chrome — speech not supported here","error"); return;
+  }
+  setupPTT();
+  startWake();
+  window.addEventListener("message",function(e){
+    if(typeof e.data==="string"&&e.data.startsWith("oauth_success:")){
+      callBackend("getAccountsForUI",{},function(data){
+        if(data&&data.google){
+          googleAccounts=data.google;
+          activeGoogle=data.google.map(function(a){return a.id});
+          lsSet("google_accounts",JSON.stringify(googleAccounts));
+          renderStrip();renderPanel();
+          addMsg("system","Google account connected ✓");
+        }
+      });
+    }
+  });
+};
+
+function checkBanners(){
+  SCRIPT_URL=ls("script_url"); CLAUDE_KEY=ls("claude_key");
+  document.getElementById("banner-url").classList.toggle("show",!SCRIPT_URL);
+  document.getElementById("banner-key").classList.toggle("show",!CLAUDE_KEY);
+}
+function openLink(u){window.open(u,"_blank");}
+
+// ── Backend ───────────────────────────────────────────────────
+function callBackend(action,payload,onSuccess,onError){
+  if(!SCRIPT_URL){(onError||noop)("No Apps Script URL in Settings");return;}
+  fetch(SCRIPT_URL,{
+    method:"POST",
+    body:JSON.stringify(Object.assign({action:action},payload)),
+    headers:{"Content-Type":"text/plain"},
+  }).then(function(r){return r.json();})
+    .then(function(d){if(d.error)throw new Error(d.error);(onSuccess||noop)(d);})
+    .catch(function(e){(onError||noop)(e.message||String(e));});
+}
+function noop(){}
+
+// ── Orb ───────────────────────────────────────────────────────
+function setOrb(s){
+  appState=s;
+  var orb=document.getElementById("orb");
+  var inner=document.getElementById("orb-inner");
+  orb.className="orb "+s;
+  var icons={idle:"🎙",wake:"🎙",listening:"🎙",ptt:"🎙",thinking:"⏳",speaking:"🔊",error:"⚠️"};
+  inner.textContent=icons[s]||"🎙";
+}
+function setStatus(msg,type){
+  var el=document.getElementById("status");
+  el.textContent=msg; el.className="status"+(type?" "+type:"");
+}
+function setTranscript(t,live){
+  var el=document.getElementById("transcript");
+  el.textContent=t||'Say "Hey Claude" or tap the orb...';
+  el.className="transcript"+(live?" live":"");
+}
+function setPttHint(on){
+  var el=document.getElementById("ptt-hint");
+  el.className="ptt-hint"+(on?" on":"");
+  el.textContent=on?"🔴 Recording — release Space when done":"Hold Space → speak → release when done";
+}
+
+// ── Wake word ─────────────────────────────────────────────────
+function startWake(){
+  if(!wakeEnabled||["listening","ptt","thinking","speaking"].includes(appState))return;
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  wakeRec=new SR();
+  wakeRec.continuous=true; wakeRec.interimResults=true; wakeRec.lang="en-US";
+  wakeRec.onresult=function(e){
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      var t=e.results[i][0].transcript.trim().toLowerCase();
+      if(WAKE.some(function(w){return t.includes(w);})){
+        wakeRec.stop(); startListening(); return;
+      }
+    }
+  };
+  wakeRec.onerror=function(e){
+    if(e.error==="not-allowed"){setStatus("Mic blocked — click 🔒 in address bar","error");setOrb("error");return;}
+    if(e.error!=="aborted"&&e.error!=="no-speech")setTimeout(startWake,2000);
+  };
+  wakeRec.onend=function(){
+    if(appState==="idle"||appState==="wake")setTimeout(startWake,400);
+  };
+  try{wakeRec.start();setOrb("wake");}catch(x){}
+}
+function toggleWake(on){
+  wakeEnabled=on;
+  if(!on&&wakeRec)try{wakeRec.stop();}catch(e){}
+  else if(on&&(appState==="idle"||appState==="wake"))startWake();
+}
+
+// ── PTT ───────────────────────────────────────────────────────
+// Key insight: NEVER call recognition.stop() on keyup.
+// Instead, set spaceReleased=true. The silence detection timer
+// in onresult then submits once speech is detected and paused.
+function setupPTT(){
+  document.addEventListener("keydown",function(e){
+    if(e.code!=="Space")return;
+    if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+    if(spaceHeld||["thinking","speaking"].includes(appState))return;
+    e.preventDefault();
+    spaceHeld=true; spaceReleased=false;
+    setPttHint(true);
+    if(wakeRec)try{wakeRec.stop();}catch(x){}
+    startListening();
+    setOrb("ptt");
+    setStatus("Hold Space and speak...","active");
+  });
+
+  document.addEventListener("keyup",function(e){
+    if(e.code!=="Space"||!spaceHeld)return;
+    if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+    e.preventDefault();
+    spaceHeld=false;
+    spaceReleased=true;
+    setPttHint(false);
+    // If we already have text, shorten the silence timer to 600ms
+    // so it submits quickly after release
+    if(captured.trim()){
+      clearTimeout(silTimer);
+      silTimer=setTimeout(submitCaptured, 600);
+    }
+    // If no text yet: keep recording, silence detection handles submit
+    // when they eventually speak
+  });
+}
+
+// ── Main recognition ──────────────────────────────────────────
+function startListening(){
+  captured=""; spaceReleased=false;
+  clearTimeout(silTimer);
+
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  mainRec=new SR();
+  mainRec.lang="en-US";
+  mainRec.interimResults=true;
+  // continuous=true keeps session alive while holding Space
+  mainRec.continuous=true;
+  mainRec.maxAlternatives=1;
+
+  if(!spaceHeld){
+    setOrb("listening");
+    setStatus("Listening...","active");
+  }
+  setTranscript("",false);
+
+  mainRec.onresult=function(e){
+    var interim="";
+    captured="";
+    for(var i=0;i<e.results.length;i++){
+      if(e.results[i].isFinal) captured+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    setTranscript(captured||interim,true);
+
+    if(captured){
+      clearTimeout(silTimer);
+      // If Space already released: submit after short silence (600ms)
+      // If Space still held: submit after longer silence (1600ms) in case they pause mid-sentence
+      var delay=spaceReleased?600:1600;
+      silTimer=setTimeout(submitCaptured, delay);
+    }
+  };
+
+  mainRec.onerror=function(e){
+    clearTimeout(silTimer);
+    setPttHint(false);
+    if(e.error==="aborted")return;
+    if(e.error==="not-allowed"){
+      setStatus("Mic blocked — click 🔒 in address bar","error");
+      setOrb("error");return;
+    }
+    // Chrome sometimes fires 'no-speech' — just restart
+    if(e.error==="no-speech"){
+      stopMainRec();
+      if(spaceHeld){
+        // Still holding Space — restart recognition
+        setTimeout(startListening,150);
+      } else {
+        setOrb("idle");setStatus("Tap orb or hold Space");setTranscript("",false);
+        setTimeout(startWake,400);
+      }
+      return;
+    }
+    setStatus("Mic error: "+e.error,"error");setOrb("error");
+    setTimeout(function(){setOrb("idle");setStatus("Tap orb or hold Space");startWake();},2500);
+  };
+
+  mainRec.onend=function(){
+    // onend fires after we call stopMainRec() — handled by submitCaptured
+  };
+
+  try{mainRec.start();}
+  catch(e){setStatus("Could not start microphone","error");}
+}
+
+function stopMainRec(){
+  clearTimeout(silTimer);
+  if(mainRec){try{mainRec.stop();}catch(x){}mainRec=null;}
+}
+
+function submitCaptured(){
+  stopMainRec();
+  setPttHint(false);
+  var cleaned=captured.trim()
+    .replace(/^(hey claude|hey clod|hey cloud|hey cloth),?\s*/i,"")
+    .trim();
+  if(cleaned){
+    submitMessage(cleaned);
+  } else {
+    setOrb("idle");setStatus("Tap orb or hold Space");setTranscript("",false);
+    setTimeout(startWake,400);
+  }
+}
+
+// ── Orb click ─────────────────────────────────────────────────
+function orbClick(){
+  if(["idle","wake"].includes(appState)){
+    if(wakeRec)try{wakeRec.stop();}catch(x){}
+    startListening();
+  } else if(["listening","ptt"].includes(appState)){
+    // Tap to submit whatever was captured so far
+    submitCaptured();
+  } else if(appState==="speaking"){
+    speechSynthesis.cancel();
+    setOrb("idle");setStatus("Tap orb or hold Space");
+    setTimeout(startWake,300);
+  }
+}
+
+// ── Submit ────────────────────────────────────────────────────
+function submitMessage(text){
+  if(!SCRIPT_URL){addMsg("system","⚠ Set Apps Script URL in Settings");setOrb("idle");setTimeout(startWake,2000);return;}
+  if(!CLAUDE_KEY){addMsg("system","⚠ Set Gemini API key in Settings");setOrb("idle");setTimeout(startWake,2000);return;}
+  setOrb("thinking");setStatus("Thinking...","active");setTranscript("",false);
+  addMsg("user",text);
+  callBackend("processMessage",{
+    userMessage:text, history:history, claudeApiKey:CLAUDE_KEY,
+    activeAccounts:{
+      google:activeGoogle.length?activeGoogle:["primary"],
+      notion:activeNotion,
+    }
+  },function(result){
+    if(result&&result.reply){
+      history=result.history||[];
+      addMsg("assistant",result.reply);
+      speak(result.reply);
+    } else handleErr("No response received");
+  },function(err){ handleErr(err); });
+}
+
+function handleErr(msg){
+  addMsg("system","Error: "+msg);
+  setOrb("error");setStatus("Error","error");
+  setTimeout(function(){setOrb("idle");setStatus("Tap orb or hold Space");startWake();},3000);
+}
+
+// ── TTS ───────────────────────────────────────────────────────
+function speak(text){
+  if(!document.getElementById("tts-toggle").checked){
+    setOrb("idle");setStatus("Tap orb or hold Space");setTimeout(startWake,300);return;
+  }
+  speechSynthesis.cancel();
+  var utt=new SpeechSynthesisUtterance(text);
+  utt.rate=1.0;utt.pitch=1.0;
+  var voices=speechSynthesis.getVoices();
+  var pick=voices.find(function(v){
+    return v.name.includes("Google")||v.name.includes("Samantha")||(v.lang==="en-US"&&v.localService);
+  });
+  if(pick)utt.voice=pick;
+  setOrb("speaking");setStatus("Speaking...","active");
+  utt.onend=utt.onerror=function(){
+    setOrb("idle");setStatus("Tap orb or hold Space");setTimeout(startWake,400);
+  };
+  speechSynthesis.speak(utt);
+}
+
+// ── Accounts ──────────────────────────────────────────────────
+function renderStrip(){
+  var s=document.getElementById("accounts-strip");
+  if(!googleAccounts.length&&!notionWorkspaces.length){
+    s.innerHTML='<span style="font-size:11px;color:#2a2a2a">Add accounts in Settings →</span>';return;
+  }
+  s.innerHTML="";
+  googleAccounts.forEach(function(a){
+    var on=activeGoogle.includes(a.id);
+    var p=document.createElement("div");
+    p.className="acct-pill"+(on?" on":"");
+    p.innerHTML='<div class="dot"></div><span>'+(a.email||a.id).split("@")[0]+'</span>';
+    p.title=a.email||a.id;
+    p.onclick=function(){
+      var i=activeGoogle.indexOf(a.id);
+      if(i>=0)activeGoogle.splice(i,1);else activeGoogle.push(a.id);
+      renderStrip();
+    };
+    s.appendChild(p);
+  });
+  notionWorkspaces.forEach(function(w){
+    var on=activeNotion.includes(w.id);
+    var p=document.createElement("div");
+    p.className="acct-pill notion"+(on?" on":"");
+    p.innerHTML='<div class="dot"></div><span>'+w.name+'</span>';
+    p.onclick=function(){
+      var i=activeNotion.indexOf(w.id);
+      if(i>=0)activeNotion.splice(i,1);else activeNotion.push(w.id);
+      renderStrip();
+    };
+    s.appendChild(p);
+  });
+}
+function renderPanel(){
+  var gl=document.getElementById("google-list");
+  gl.innerHTML=googleAccounts.length?googleAccounts.map(function(a){
+    return'<div class="account-row"><span class="badge google">Google</span>'
+      +'<span class="account-email">'+(a.email||a.id)+'</span>'
+      +(a.id==="primary"?'<span style="font-size:10px;color:#333">primary</span>'
+        :'<button class="remove-btn" onclick="removeGoogle(\''+a.id+'\')">Remove</button>')
+      +'</div>';
+  }).join(""):'<span style="font-size:11px;color:#333">No extra accounts yet</span>';
+  var nl=document.getElementById("notion-list");
+  nl.innerHTML=notionWorkspaces.length?notionWorkspaces.map(function(w){
+    return'<div class="account-row"><span class="badge notion">Notion</span>'
+      +'<span class="account-email">'+w.name+'</span>'
+      +'<button class="remove-btn" onclick="removeNotion(\''+w.id+'\')">Remove</button>'
+      +'</div>';
+  }).join(""):'<span style="font-size:11px;color:#333">No workspaces added</span>';
+}
+function addGoogleAccount(){
+  if(!SCRIPT_URL){alert("Set Apps Script URL in Settings first.");return;}
+  callBackend("startGoogleOAuth",{},function(r){
+    var p=window.open(r.url,"_blank","width=500,height=600,left=200,top=100");
+    if(!p)alert("Allow popups for this page.");
+  },function(e){alert("Error: "+e);});
+}
+function removeGoogle(id){
+  if(!confirm("Remove this account?"))return;
+  callBackend("removeGoogleAccount",{accountId:id},function(){
+    googleAccounts=googleAccounts.filter(function(a){return a.id!==id;});
+    activeGoogle=activeGoogle.filter(function(i){return i!==id;});
+    lsSet("google_accounts",JSON.stringify(googleAccounts));
+    renderStrip();renderPanel();
+  });
+}
+function showNotionForm(){document.getElementById("notion-form").style.display="flex";document.getElementById("add-notion-btn").style.display="none";}
+function hideNotionForm(){document.getElementById("notion-form").style.display="none";document.getElementById("add-notion-btn").style.display="flex";document.getElementById("nf-status").textContent="";}
+function saveNotion(){
+  var name=document.getElementById("nf-name").value.trim();
+  var token=document.getElementById("nf-token").value.trim();
+  var dbId=document.getElementById("nf-dbid").value.trim().replace(/.*?([a-f0-9]{32}).*/i,"$1");
+  var tp=document.getElementById("nf-titleprop").value.trim()||"Name";
+  if(!name||!token||!dbId){document.getElementById("nf-status").textContent="Fill all fields.";return;}
+  var btn=document.getElementById("nf-save");btn.disabled=true;
+  document.getElementById("nf-status").textContent="Testing...";
+  callBackend("testNotionWorkspace",{token:token,dbId:dbId},function(r){
+    if(r.success){
+      var ws={id:"ws_"+Date.now(),name:name,token:token,dbId:dbId,titleProp:tp};
+      notionWorkspaces.push(ws);activeNotion.push(ws.id);
+      lsSet("notion_workspaces",JSON.stringify(notionWorkspaces));
+      renderStrip();renderPanel();hideNotionForm();
+      addMsg("system",'Notion "'+name+'" connected ✓');
+    }else document.getElementById("nf-status").textContent="Failed: "+(r.error||"unknown");
+    btn.disabled=false;
+  },function(e){document.getElementById("nf-status").textContent="Error: "+e;btn.disabled=false;});
+}
+function removeNotion(id){
+  if(!confirm("Remove?"))return;
+  notionWorkspaces=notionWorkspaces.filter(function(w){return w.id!==id;});
+  activeNotion=activeNotion.filter(function(i){return i!==id;});
+  lsSet("notion_workspaces",JSON.stringify(notionWorkspaces));
+  renderStrip();renderPanel();
+}
+function openPanel(){document.getElementById("panel").classList.add("open");}
+function closePanel(){document.getElementById("panel").classList.remove("open");}
+function panelBgClick(e){if(e.target===document.getElementById("panel"))closePanel();}
+function addMsg(role,text){
+  var log=document.getElementById("chat");
+  var d=document.createElement("div");
+  d.className="msg "+role;d.textContent=text;
+  log.appendChild(d);log.scrollTop=log.scrollHeight;
+}
+function clearChat(){history=[];document.getElementById("chat").innerHTML="";addMsg("system","Cleared");}
+</script>
+</body>
+</html>
