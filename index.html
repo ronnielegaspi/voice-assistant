@@ -9,170 +9,206 @@
 :root{
   --bg:#0a0a0a;--surface:#111;--surface2:#161616;
   --border:#1e1e1e;--border2:#252525;
-  --text:#e0e0e0;--muted:#555;--faint:#252525;
-  --blue:#4a9eff;--green:#4aef9b;--purple:#9b7eff;--red:#ef6a6a;
+  --text:#e0e0e0;--muted:#555;--faint:#222;
+  --blue:#4a9eff;--green:#4aef9b;--purple:#9b7eff;--red:#ef5a5a;
 }
 html,body{height:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;align-items:center;height:100vh;overflow:hidden}
 .app{width:100%;max-width:680px;height:100%;display:flex;flex-direction:column}
 
 /* Header */
-.header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
-.header-left{display:flex;align-items:center;gap:10px}
-.logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#4a9eff44,#9b7eff44);border:1px solid #4a9eff33;display:flex;align-items:center;justify-content:center;font-size:15px}
-.app-name{font-size:14px;font-weight:500}
-.app-sub{font-size:11px;color:var(--muted)}
-.header-right{display:flex;align-items:center;gap:8px}
-.hbtn{background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--muted);font-size:12px;padding:5px 10px;cursor:pointer;transition:all .15s;font-family:inherit}
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#4a9eff33,#9b7eff33);border:1px solid #4a9eff22;display:flex;align-items:center;justify-content:center;font-size:13px}
+.app-name{font-size:13px;font-weight:500}
+.app-sub{font-size:10px;color:var(--muted)}
+.hright{display:flex;align-items:center;gap:7px}
+.hbtn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;padding:4px 9px;cursor:pointer;font-family:inherit}
 .hbtn:hover{border-color:var(--border2);color:var(--text)}
-.conn-dot{width:7px;height:7px;border-radius:50%;background:#2a2a2a;flex-shrink:0;transition:background .3s}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:#222}
 .conn-dot.ok{background:#3aaa6a}
 .conn-dot.err{background:var(--red)}
 
 /* Banners */
-.banner{padding:9px 20px;font-size:12px;line-height:1.5;display:none;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
-.banner.show{display:flex}
-.banner.warn{background:#140e00;color:#c8900a}
-.banner a{color:#f0b000;cursor:pointer;text-decoration:underline}
+.banner{padding:8px 20px;font-size:11px;line-height:1.5;display:none;border-bottom:1px solid var(--border)}
+.banner.show{display:block}
+.banner.warn{background:#120d00;color:#b07a00}
+.banner a{color:#e0a000;cursor:pointer;text-decoration:underline}
 
 /* Context pills */
-.ctx-row{display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;min-height:40px}
+.ctx-row{display:flex;align-items:center;gap:7px;padding:7px 20px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;min-height:38px}
 .ctx-row::-webkit-scrollbar{display:none}
-.ctx-label{font-size:10px;color:#2a2a2a;flex-shrink:0}
-.pill{display:flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:11px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;user-select:none;flex-shrink:0;transition:all .15s}
-.pill.on{border-color:#2a3a2a;background:#0a1a0a;color:var(--green)}
-.pill.notion.on{border-color:#2a2a3a;background:#0a0a1a;color:var(--purple)}
-.pill .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.ctx-lbl{font-size:10px;color:#252525;flex-shrink:0}
+.pill{display:flex;align-items:center;gap:4px;padding:2px 9px;border-radius:11px;font-size:11px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;user-select:none;flex-shrink:0}
+.pill.on{border-color:#253a25;background:#081508;color:var(--green)}
+.pill.notion.on{border-color:#25253a;background:#08081a;color:var(--purple)}
+.pill .dot{width:4px;height:4px;border-radius:50%;background:currentColor}
 
 /* Chat */
-.chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
-.chat::-webkit-scrollbar{width:4px}
+.chat{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.chat::-webkit-scrollbar{width:3px}
 .chat::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-
-.row{display:flex;gap:10px;align-items:flex-start}
+.row{display:flex;gap:9px;align-items:flex-start}
 .row.user{flex-direction:row-reverse}
 .row.center{justify-content:center}
-.av{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px}
-.av.ai{background:#0d1428;border:1px solid #1a2a4a}
+.av{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.av.ai{background:#0a1220;border:1px solid #1a2840}
 .av.user{background:var(--surface2);border:1px solid var(--border)}
-.bubble{max-width:84%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.65;word-break:break-word}
+.bubble{max-width:85%;padding:9px 13px;border-radius:11px;font-size:13px;line-height:1.65;word-break:break-word}
 .bubble.ai{background:var(--surface);border:1px solid var(--border)}
-.bubble.user{background:#12122a;border:1px solid #1e1e3a;color:#a0b4ff}
-.bubble.sys{background:transparent;border:none;color:#333;font-size:11px;font-style:italic;padding:0}
-
-/* Typing */
-.typing{display:flex;gap:5px;padding:6px 4px;align-items:center}
-.typing b{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:boing 1.2s ease-in-out infinite}
+.bubble.user{background:#101228;border:1px solid #1a1e3a;color:#9aaeff}
+.bubble.sys{background:transparent;border:none;color:#2a2a2a;font-size:11px;font-style:italic;padding:0}
+.typing{display:flex;gap:4px;padding:4px 0;align-items:center}
+.typing b{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tbounce 1.2s ease-in-out infinite}
 .typing b:nth-child(2){animation-delay:.2s}
 .typing b:nth-child(3){animation-delay:.4s}
-@keyframes boing{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+@keyframes tbounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
 
-/* Empty state */
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:14px;padding:40px 20px;text-align:center}
-.empty-icon{font-size:40px;opacity:.5}
-.empty-title{font-size:15px;font-weight:500;color:var(--muted)}
-.empty-sub{font-size:12px;color:#333;max-width:320px;line-height:1.7}
+/* Empty */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;padding:32px 20px;text-align:center}
+.empty-icon{font-size:34px;opacity:.4}
+.empty-title{font-size:14px;font-weight:500;color:var(--muted)}
+.empty-sub{font-size:12px;color:#2a2a2a;max-width:300px;line-height:1.7}
 .sugs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:4px}
-.sug{padding:6px 13px;border-radius:16px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;cursor:pointer;transition:all .15s;font-family:inherit}
+.sug{padding:5px 12px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit}
 .sug:hover{border-color:var(--border2);color:var(--text)}
 
-/* Input */
-.input-area{padding:16px 20px;border-top:1px solid var(--border);flex-shrink:0}
-.input-row{display:flex;gap:8px;align-items:flex-end}
-.input-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:flex-end;gap:8px;transition:border-color .15s}
+/* Voice orb */
+.orb-row{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 20px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg)}
+.orb{width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:border-color .2s,box-shadow .2s;flex-shrink:0}
+.orb.wake{}
+.orb.listening{border-color:var(--blue);box-shadow:0 0 0 6px rgba(74,158,255,.08);animation:porb-blue 1.4s ease-in-out infinite}
+.orb.ptt{border-color:var(--red);box-shadow:0 0 0 8px rgba(239,90,90,.1);animation:porb-red 1s ease-in-out infinite}
+.orb.thinking{border-color:var(--purple)}
+.orb.speaking{border-color:var(--green);box-shadow:0 0 0 6px rgba(74,239,155,.08);animation:porb-green .9s ease-in-out infinite}
+.orb.error{border-color:var(--red)}
+@keyframes porb-blue{0%,100%{box-shadow:0 0 0 4px rgba(74,158,255,.06)}50%{box-shadow:0 0 0 10px rgba(74,158,255,.1)}}
+@keyframes porb-red{0%,100%{box-shadow:0 0 0 4px rgba(239,90,90,.08)}50%{box-shadow:0 0 0 14px rgba(239,90,90,.12)}}
+@keyframes porb-green{0%,100%{box-shadow:0 0 0 4px rgba(74,239,155,.06)}50%{box-shadow:0 0 0 10px rgba(74,239,155,.1)}}
+.orb-info{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.orb-status{font-size:12px;color:var(--muted)}
+.orb-transcript{font-size:11px;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.orb-transcript.live{color:#666}
+.orb-controls{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.toggle-row{display:flex;align-items:center;gap:5px;font-size:11px;color:#333}
+.toggle{position:relative;width:28px;height:16px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;transition:.2s}
+.toggle input:checked~.toggle-track{background:#0d2040;border-color:var(--blue)}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:10px;height:10px;background:#444;border-radius:50%;transition:.2s}
+.toggle input:checked~.toggle-thumb{left:14px;background:var(--blue)}
+.kbd{background:#111;border:1px solid #1a1a1a;border-radius:3px;font-size:10px;color:#333;padding:1px 4px;font-family:monospace}
+
+/* Text input */
+.input-area{padding:10px 20px 14px;flex-shrink:0;border-top:1px solid var(--border)}
+.input-row{display:flex;gap:7px;align-items:flex-end}
+.input-box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:8px 12px;display:flex;align-items:flex-end;gap:7px}
 .input-box:focus-within{border-color:var(--border2)}
-textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:13px;line-height:1.5;resize:none;max-height:120px;min-height:22px}
-textarea::placeholder{color:#2d2d2d}
-.mic{background:transparent;border:none;color:var(--muted);font-size:17px;cursor:pointer;padding:0;flex-shrink:0;line-height:1;transition:color .15s}
-.mic:hover{color:var(--text)}
-.mic.on{color:var(--red);animation:mpulse 1s ease-in-out infinite}
-@keyframes mpulse{0%,100%{opacity:1}50%{opacity:.4}}
-.send{width:38px;height:38px;border-radius:10px;background:var(--blue);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s}
+textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:13px;line-height:1.5;resize:none;max-height:100px;min-height:20px}
+textarea::placeholder{color:#252525}
+.send{width:34px;height:34px;border-radius:9px;background:var(--blue);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .send:hover{opacity:.85}
 .send:disabled{opacity:.3;cursor:not-allowed}
-.input-hint{font-size:10px;color:#222;text-align:center;margin-top:6px}
 
 /* Settings panel */
 .panel{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:flex-end;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
 .panel.open{opacity:1;pointer-events:all}
-.pbox{background:#0d0d0d;border:1px solid var(--border);border-radius:16px 16px 0 0;width:100%;max-width:680px;max-height:87vh;overflow-y:auto;padding:20px 20px 44px}
-.phd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.ptitle{font-size:14px;font-weight:500}
-.xbtn{background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
-.sec{margin-bottom:24px}
-.sec-title{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.pbox{background:#0d0d0d;border:1px solid var(--border);border-radius:14px 14px 0 0;width:100%;max-width:680px;max-height:87vh;overflow-y:auto;padding:18px 20px 40px}
+.phd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.ptitle{font-size:13px;font-weight:500}
+.xbtn{background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.sec{margin-bottom:22px}
+.sec-title{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .field:last-child{margin-bottom:0}
 .field label{font-size:11px;color:var(--muted)}
-.inp{width:100%;padding:8px 11px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit}
+.inp{width:100%;padding:7px 10px;background:var(--bg);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-size:12px;font-family:inherit}
 .inp:focus{outline:none;border-color:#333}
-.inp::placeholder{color:#222}
-.hint{font-size:10px;color:#333;line-height:1.5}
-.hint a{color:#555;cursor:pointer;text-decoration:underline}
-.sbtn{padding:8px 18px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:8px;color:var(--green);font-size:12px;cursor:pointer;font-family:inherit}
+.inp::placeholder{color:#1e1e1e}
+.hint{font-size:10px;color:#2a2a2a;line-height:1.5}
+.hint a{color:#444;cursor:pointer;text-decoration:underline}
+.sbtn{padding:7px 16px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:7px;color:var(--green);font-size:11px;cursor:pointer;font-family:inherit}
 .sbtn:disabled{opacity:.4;cursor:not-allowed}
 .divider{height:1px;background:var(--border);margin:6px 0 14px}
-.nrow{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
-.nname{font-size:12px;color:#888;flex:1}
-.nbadge{font-size:10px;padding:2px 7px;border-radius:6px;background:#1a0d3a;color:var(--purple);border:1px solid #2a1a5a}
-.rbtn{background:transparent;border:1px solid #2a1a1a;border-radius:5px;color:#5a3a3a;font-size:10px;padding:2px 7px;cursor:pointer}
+.nrow{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--surface);border:1px solid var(--border);border-radius:7px;margin-bottom:5px}
+.nname{font-size:12px;color:#777;flex:1}
+.nbadge{font-size:10px;padding:1px 6px;border-radius:5px;background:#1a0d3a;color:var(--purple);border:1px solid #2a1a5a}
+.gbadge{font-size:10px;padding:1px 6px;border-radius:5px;background:#0d1f3a;color:var(--blue);border:1px solid #1a3a5a}
+.rbtn{background:transparent;border:1px solid #2a1a1a;border-radius:4px;color:#4a2a2a;font-size:10px;padding:2px 6px;cursor:pointer}
 .rbtn:hover{color:var(--red);border-color:#5a2a2a}
-.abtn{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px dashed var(--border2);border-radius:8px;color:var(--muted);font-size:12px;cursor:pointer;background:transparent;width:100%;font-family:inherit;margin-top:6px}
+.abtn{display:flex;align-items:center;gap:5px;padding:7px 11px;border:1px dashed var(--border2);border-radius:7px;color:var(--muted);font-size:11px;cursor:pointer;background:transparent;width:100%;font-family:inherit;margin-top:5px}
 .abtn:hover{border-color:#333;color:var(--text)}
-.aform{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:flex;flex-direction:column;gap:10px}
-.fbtns{display:flex;gap:8px}
+.aform{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:12px;margin-top:7px;display:flex;flex-direction:column;gap:8px}
+.fbtns{display:flex;gap:7px}
 .fstatus{font-size:11px;color:var(--muted);margin-top:2px}
+.test-row{display:flex;align-items:center;gap:8px;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="app">
 
+  <!-- Header -->
   <div class="header">
-    <div class="header-left">
+    <div style="display:flex;align-items:center;gap:9px">
       <div class="logo">✦</div>
-      <div>
-        <div class="app-name">Notion AI</div>
-        <div class="app-sub" id="model-label">Gemini Flash · free</div>
-      </div>
+      <div><div class="app-name">Notion AI</div><div class="app-sub">Gemini · free tier</div></div>
     </div>
-    <div class="header-right">
-      <div class="conn-dot" id="conn-dot" title="Backend status"></div>
+    <div class="hright">
+      <div class="conn-dot" id="conn-dot"></div>
       <button class="hbtn" onclick="clearChat()">Clear</button>
       <button class="hbtn" onclick="openPanel()">Settings ⚙</button>
     </div>
   </div>
 
+  <!-- Banners -->
   <div class="banner warn" id="b-url">⚠ Apps Script URL not set — open <a onclick="openPanel()">Settings</a></div>
-  <div class="banner warn" id="b-key">⚠ Gemini API key not set — get one free at <a onclick="openLink('https://aistudio.google.com')">aistudio.google.com</a> then open <a onclick="openPanel()">Settings</a></div>
+  <div class="banner warn" id="b-key">⚠ Gemini API key not set — get one free at <a onclick="openLink('https://aistudio.google.com')">aistudio.google.com</a> → <a onclick="openPanel()">Settings</a></div>
 
-  <div class="ctx-row" id="ctx-row">
-    <span class="ctx-label">Context:</span>
-  </div>
+  <!-- Context pills -->
+  <div class="ctx-row" id="ctx-row"><span class="ctx-lbl">Context:</span></div>
 
+  <!-- Chat messages -->
   <div class="chat" id="chat">
-    <div class="empty" id="empty-state">
+    <div class="empty" id="empty">
       <div class="empty-icon">✦</div>
-      <div class="empty-title">Ask me anything about your data</div>
-      <div class="empty-sub">I can read your Notion tasks, Google Calendar, Tasks, Drive and Gmail — and take actions for you.</div>
+      <div class="empty-title">Say "Hey Claude" or tap the orb</div>
+      <div class="empty-sub">I can see your Notion tasks, Calendar, Google Tasks, Drive and Gmail.</div>
       <div class="sugs">
         <button class="sug" onclick="useSug(this)">What are my tasks today?</button>
-        <button class="sug" onclick="useSug(this)">What's on my calendar this week?</button>
+        <button class="sug" onclick="useSug(this)">What's on my calendar?</button>
         <button class="sug" onclick="useSug(this)">Any unread emails?</button>
-        <button class="sug" onclick="useSug(this)">Create a task: review designs</button>
         <button class="sug" onclick="useSug(this)">Summarize my Notion database</button>
       </div>
     </div>
   </div>
 
+  <!-- Voice orb row -->
+  <div class="orb-row">
+    <div class="orb" id="orb" onclick="orbClick()">🎙</div>
+    <div class="orb-info">
+      <div class="orb-status" id="orb-status">Say "Hey Claude" or tap the orb</div>
+      <div class="orb-transcript" id="orb-transcript"></div>
+    </div>
+    <div class="orb-controls">
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="wake-tog" checked onchange="toggleWake(this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        <span>Wake</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="tts-tog" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        <span>Speak</span>
+      </div>
+      <span class="toggle-row"><span class="kbd">Space</span></span>
+    </div>
+  </div>
+
+  <!-- Text input -->
   <div class="input-area">
     <div class="input-row">
       <div class="input-box">
-        <textarea id="ta" placeholder="Ask anything..." rows="1" onkeydown="taKey(event)" oninput="taResize(this)"></textarea>
-        <button class="mic" id="mic-btn" onclick="toggleMic()" title="Voice input">🎙</button>
+        <textarea id="ta" placeholder="Type a message..." rows="1" onkeydown="taKey(event)" oninput="taResize(this)"></textarea>
       </div>
-      <button class="send" id="send-btn" onclick="sendMsg()" disabled>↑</button>
+      <button class="send" id="send-btn" onclick="sendText()" disabled>↑</button>
     </div>
-    <div class="input-hint">Enter to send · Shift+Enter for new line · 🎙 for voice</div>
   </div>
 </div>
 
@@ -186,28 +222,28 @@ textarea::placeholder{color:#2d2d2d}
       <div class="field">
         <label>Gemini API Key (free)</label>
         <input class="inp" type="password" id="s-gkey" placeholder="AIza..." oninput="saveSetting('gemini_key',this.value)">
-        <span class="hint">Get yours free at <a onclick="openLink('https://aistudio.google.com')">aistudio.google.com</a> → Get API Key. Stored in your browser only.</span>
+        <span class="hint">Free at <a onclick="openLink('https://aistudio.google.com')">aistudio.google.com</a> → Get API Key</span>
       </div>
     </div>
-
     <div class="divider"></div>
 
     <div class="sec">
-      <div class="sec-title">Backend</div>
+      <div class="sec-title">Backend (Apps Script)</div>
       <div class="field">
-        <label>Apps Script Web App URL</label>
+        <label>Web App URL</label>
         <input class="inp" id="s-url" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveSetting('script_url',this.value)">
-        <span class="hint">Deploy Code.gs as Web App → Execute as: Me → Who has access: Anyone → paste /exec URL</span>
+        <span class="hint">Deploy Code.gs → Execute as: Me → Who has access: Anyone → /exec URL</span>
       </div>
-      <button class="sbtn" onclick="testConnection()">Test connection</button>
-      <div class="fstatus" id="conn-status"></div>
+      <div class="test-row">
+        <button class="sbtn" onclick="testConn()">Test connection</button>
+        <span class="fstatus" id="conn-status"></span>
+      </div>
     </div>
-
     <div class="divider"></div>
 
     <div class="sec">
       <div class="sec-title">Notion Workspaces</div>
-      <div id="notion-list"><span style="font-size:11px;color:#333">No workspaces added</span></div>
+      <div id="notion-list"></div>
       <button class="abtn" id="add-notion-btn" onclick="showNForm()">+ Add Notion workspace</button>
       <div id="notion-form" style="display:none" class="aform">
         <div class="field"><label>Workspace name</label><input class="inp" id="nf-name" placeholder="Work, Personal..."></div>
@@ -218,25 +254,21 @@ textarea::placeholder{color:#2d2d2d}
         <div class="fstatus" id="nf-status"></div>
       </div>
     </div>
-
     <div class="divider"></div>
 
     <div class="sec">
       <div class="sec-title">Google Accounts</div>
-      <div id="google-list"><span style="font-size:11px;color:#333">Set Apps Script URL first, then connect accounts</span></div>
+      <div id="google-list"></div>
       <button class="abtn" onclick="addGoogle()">+ Connect Google account</button>
     </div>
-
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════
-//  STORAGE
-// ══════════════════════════════════════
-function ls(k){try{return localStorage.getItem("na1_"+k)||""}catch(e){return""}}
-function lsSet(k,v){try{localStorage.setItem("na1_"+k,v)}catch(e){}}
-function saveSetting(k,v){lsSet(k,v.trim());init();}
+// ── Storage ───────────────────────────────────────────────────
+function ls(k){try{return localStorage.getItem("nai2_"+k)||""}catch(e){return""}}
+function lsSet(k,v){try{localStorage.setItem("nai2_"+k,v)}catch(e){}}
+function saveSetting(k,v){lsSet(k,v.trim());initSettings();}
 
 var SCRIPT_URL       = "";
 var GEMINI_KEY       = "";
@@ -244,142 +276,117 @@ var notionWorkspaces = [];
 var googleAccounts   = [];
 var activeNotion     = [];
 var activeGoogle     = [];
-var chatHistory      = []; // [{role:"user",parts:[{text:"..."}]}, ...]
-var isRecording      = false;
-var recognition      = null;
+var chatHistory      = [];
 var isBusy           = false;
 
-// ══════════════════════════════════════
-//  BOOT
-// ══════════════════════════════════════
+// ── Voice state ───────────────────────────────────────────────
+var vState       = "idle"; // idle | wake | listening | ptt | thinking | speaking | error
+var wakeRec      = null;
+var mainRec      = null;
+var wakeEnabled  = true;
+var spaceHeld    = false;
+var spaceReleased = false;
+var captured     = "";
+var silTimer     = null;
+var WAKE         = ["hey claude","hey clod","hey cloud","hey cloth","hey assistant"];
+
+// ── Boot ──────────────────────────────────────────────────────
 window.onload = function(){
-  document.getElementById("s-url").value  = ls("script_url");
-  document.getElementById("s-gkey").value = ls("gemini_key");
   notionWorkspaces = JSON.parse(ls("notion_workspaces")||"[]");
   googleAccounts   = JSON.parse(ls("google_accounts")  ||"[]");
-  init();
+  document.getElementById("s-url").value  = ls("script_url");
+  document.getElementById("s-gkey").value = ls("gemini_key");
+  initSettings();
 
-  // OAuth popup message
-  window.addEventListener("message", function(e){
-    if(typeof e.data==="string" && e.data.startsWith("oauth_success:")){
-      scriptCall("getAccountsForUI", {}, function(d){
-        if(d && d.google){
-          googleAccounts = d.google;
-          lsSet("google_accounts", JSON.stringify(googleAccounts));
-          init(); addSysMsg("Google account connected ✓");
+  if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){
+    setOrbStatus("Voice not supported — use Chrome","error");
+  } else {
+    setupPTT();
+    startWake();
+  }
+
+  window.addEventListener("message",function(e){
+    if(typeof e.data==="string"&&e.data.startsWith("oauth_success:")){
+      scriptCall("getAccountsForUI",{},function(d){
+        if(d&&d.google){
+          googleAccounts=d.google;
+          lsSet("google_accounts",JSON.stringify(googleAccounts));
+          initSettings();
+          addSys("Google account connected ✓");
         }
       });
     }
   });
 };
 
-function init(){
+function initSettings(){
   SCRIPT_URL = ls("script_url");
   GEMINI_KEY = ls("gemini_key");
-  document.getElementById("b-url").classList.toggle("show", !SCRIPT_URL);
-  document.getElementById("b-key").classList.toggle("show", !GEMINI_KEY);
+  document.getElementById("b-url").classList.toggle("show",!SCRIPT_URL);
+  document.getElementById("b-key").classList.toggle("show",!GEMINI_KEY);
   activeNotion = notionWorkspaces.map(function(w){return w.id});
   activeGoogle = googleAccounts.map(function(a){return a.id});
-  renderCtxPills();
+  renderCtx();
   renderNotionList();
   renderGoogleList();
 }
 
 function openLink(u){window.open(u,"_blank");}
 
-// ══════════════════════════════════════
-//  JSONP — the fix for CORS
-//  Apps Script GET + ?callback=fn returns
-//  JS that browsers allow cross-origin
-// ══════════════════════════════════════
-var _cbCount = 0;
-
+// ── JSONP for Apps Script ─────────────────────────────────────
+var _cbc = 0;
 function scriptCall(action, payload, onSuccess, onError){
   if(!SCRIPT_URL){(onError||noop)("No Apps Script URL in Settings");return;}
-
-  var cbName = "_cb" + (++_cbCount);
-  var script  = document.createElement("script");
-  var done    = false;
-
-  var timer = setTimeout(function(){
-    if(done) return;
-    done = true;
-    cleanup();
-    (onError||noop)("Request timed out — check your Apps Script URL and deployment");
-  }, 15000);
-
-  window[cbName] = function(data){
-    if(done) return;
-    done = true;
-    clearTimeout(timer);
-    cleanup();
-    if(data && data.error) (onError||noop)(data.error);
-    else (onSuccess||noop)(data);
+  var cb   = "_sc"+(++_cbc);
+  var sc   = document.createElement("script");
+  var done = false;
+  var t    = setTimeout(function(){
+    if(done)return; done=true; cleanup();
+    (onError||noop)("Timed out — check your Apps Script URL and redeploy with Who has access: Anyone");
+  },15000);
+  window[cb] = function(d){
+    if(done)return; done=true; clearTimeout(t); cleanup();
+    if(d&&d.error)(onError||noop)(d.error); else (onSuccess||noop)(d);
   };
-
-  function cleanup(){
-    delete window[cbName];
-    if(script.parentNode) script.parentNode.removeChild(script);
-  }
-
-  var url = SCRIPT_URL
-    + "?action="   + encodeURIComponent(action)
-    + "&data="     + encodeURIComponent(JSON.stringify(payload||{}))
-    + "&callback=" + encodeURIComponent(cbName);
-
-  script.src = url;
-  script.onerror = function(){
-    if(done) return; done=true; clearTimeout(timer); cleanup();
-    (onError||noop)("Script load failed — check your Apps Script URL");
-  };
-  document.head.appendChild(script);
+  function cleanup(){delete window[cb];if(sc.parentNode)sc.parentNode.removeChild(sc);}
+  sc.onerror=function(){if(done)return;done=true;clearTimeout(t);cleanup();(onError||noop)("Failed to reach Apps Script");};
+  sc.src = SCRIPT_URL
+    +"?action="+encodeURIComponent(action)
+    +"&data="+encodeURIComponent(JSON.stringify(payload||{}))
+    +"&callback="+encodeURIComponent(cb);
+  document.head.appendChild(sc);
 }
-
 function noop(){}
 
-// ══════════════════════════════════════
-//  GEMINI — called directly from browser
-//  No Apps Script needed, no CORS issue
-// ══════════════════════════════════════
+// ── Gemini (direct fetch, CORS works natively) ────────────────
 var GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 function callGemini(userText, context, onSuccess, onError){
   if(!GEMINI_KEY){(onError||noop)("No Gemini API key in Settings");return;}
-
   var now = new Date().toLocaleString("en-PH",{timeZone:"Asia/Manila"});
-  var systemText = "You are a smart, helpful personal assistant for DOMIN8. "
-    + "Current date/time: " + now + " (Philippines, Asia/Manila). "
-    + "Keep responses concise and natural. No excessive formatting. "
-    + "When showing lists, keep them short and scannable. ";
+  var sys = "You are a smart, concise voice and chat assistant for DOMIN8. "
+    +"Current time: "+now+" (Philippines). "
+    +"Keep answers SHORT and natural — responses may be spoken aloud. "
+    +"No markdown asterisks or bullet symbols in spoken responses. "
+    +(context ? "\n\nUser's live data:\n"+context : "");
 
-  if(context){
-    systemText += "\n\nHere is the user's live data from their connected services:\n\n" + context;
-  }
-
-  // Build contents — inject system as first user turn (Gemini Flash approach)
   var contents = [];
-
-  // Add system context as first exchange if this is a fresh conversation
-  if(chatHistory.length === 0){
-    contents.push({role:"user",   parts:[{text: "System context (remember this for our conversation):\n" + systemText}]});
-    contents.push({role:"model",  parts:[{text: "Understood. I have your context and I'm ready to help."}]});
+  if(chatHistory.length===0){
+    contents.push({role:"user",  parts:[{text:"System context:\n"+sys}]});
+    contents.push({role:"model", parts:[{text:"Got it, ready to help."}]});
   }
-
-  // Add chat history
   for(var i=0;i<chatHistory.length;i++) contents.push(chatHistory[i]);
+  contents.push({role:"user", parts:[{text:userText}]});
 
-  // Add current message
-  contents.push({role:"user", parts:[{text: userText}]});
-
-  fetch(GEMINI_URL + "?key=" + GEMINI_KEY, {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      contents: contents,
-      generationConfig: {maxOutputTokens:1024, temperature:0.7},
+  fetch(GEMINI_URL+"?key="+GEMINI_KEY,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      contents:contents,
+      generationConfig:{maxOutputTokens:1024,temperature:0.7},
       safetySettings:[
-        {category:"HARM_CATEGORY_HARASSMENT",       threshold:"BLOCK_NONE"},
-        {category:"HARM_CATEGORY_HATE_SPEECH",      threshold:"BLOCK_NONE"},
+        {category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},
+        {category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},
         {category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},
         {category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"},
       ]
@@ -387,308 +394,397 @@ function callGemini(userText, context, onSuccess, onError){
   })
   .then(function(r){return r.json();})
   .then(function(d){
-    if(d.error) throw new Error(d.error.message||JSON.stringify(d.error));
-    var text = d.candidates && d.candidates[0] && d.candidates[0].content &&
-               d.candidates[0].content.parts && d.candidates[0].content.parts[0].text;
-    if(!text) throw new Error("Empty response from Gemini");
-
-    // Update chat history
+    if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
+    var text=d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0].text;
+    if(!text)throw new Error("Empty response from Gemini");
     chatHistory.push({role:"user",  parts:[{text:userText}]});
     chatHistory.push({role:"model", parts:[{text:text}]});
-
     (onSuccess||noop)(text);
   })
   .catch(function(e){(onError||noop)(e.message||String(e));});
 }
 
-// ══════════════════════════════════════
-//  SEND MESSAGE
-// ══════════════════════════════════════
-function sendMsg(){
-  var ta   = document.getElementById("ta");
-  var text = ta.value.trim();
-  if(!text || isBusy) return;
-  ta.value = ""; taResize(ta);
-  setSend(true);
+// ── Process a user message (fetch context then call Gemini) ───
+function processMessage(text){
+  if(isBusy)return;
+  isBusy=true;
   hideEmpty();
-  addBubble("user", text);
-  var typingEl = addTyping();
+  addBubble("user",text);
+  var typing = addTyping();
+  setOrbState("thinking");
+  setOrbStatus("Thinking...");
 
-  // First fetch context from Apps Script, then ask Gemini
-  if(SCRIPT_URL && (activeNotion.length || activeGoogle.length)){
-    scriptCall("getContext", {
-      activeAccounts: {google: activeGoogle, notion: activeNotion}
-    }, function(data){
-      var ctx = (data && data.context) || "";
-      askGemini(text, ctx, typingEl);
-    }, function(){
-      // Context fetch failed — ask Gemini without context
-      askGemini(text, "", typingEl);
+  function ask(ctx){
+    callGemini(text, ctx, function(reply){
+      isBusy=false;
+      removeTyping(typing);
+      addBubble("ai",reply);
+      speak(reply);
+    }, function(err){
+      isBusy=false;
+      removeTyping(typing);
+      addSys("Error: "+err);
+      setOrbState("idle");
+      setOrbStatus("Say \"Hey Claude\" or tap the orb");
+      setTimeout(startWake,500);
     });
+  }
+
+  if(SCRIPT_URL&&(activeNotion.length||activeGoogle.length)){
+    scriptCall("getContext",{activeAccounts:{google:activeGoogle,notion:activeNotion}},
+      function(d){ask((d&&d.context)||"");},
+      function(){ask("");} // fallback — ask without context
+    );
   } else {
-    askGemini(text, "", typingEl);
+    ask("");
   }
 }
 
-function askGemini(text, context, typingEl){
-  callGemini(text, context, function(reply){
-    removeTyping(typingEl);
-    addBubble("ai", reply);
-    setSend(false);
-
-    // Check if Gemini wants to take an action
-    checkForAction(reply);
-  }, function(err){
-    removeTyping(typingEl);
-    addSysMsg("Error: " + err);
-    setSend(false);
-  });
-}
-
-// Simple action detection — if Gemini says "I'll create..." actually do it
-function checkForAction(reply){
-  // This is optional — Gemini will describe what it would do.
-  // For full tool use, expand this with structured prompting.
-}
-
-// ══════════════════════════════════════
-//  CONNECTION TEST
-// ══════════════════════════════════════
-function testConnection(){
-  var el = document.getElementById("conn-status");
-  var dot = document.getElementById("conn-dot");
-  el.textContent = "Testing..."; dot.className = "conn-dot";
-  scriptCall("getAccountsForUI", {}, function(data){
-    el.textContent = "✓ Connected — " + (data.google||[]).length + " Google account(s), " + (data.notion||[]).length + " Notion workspace(s)";
-    dot.className = "conn-dot ok";
-    if(data.google){ googleAccounts=data.google; lsSet("google_accounts",JSON.stringify(googleAccounts)); }
-    renderGoogleList(); renderCtxPills();
-  }, function(err){
-    el.textContent = "✗ " + err;
-    dot.className = "conn-dot err";
-  });
-}
-
-// ══════════════════════════════════════
-//  VOICE INPUT
-// ══════════════════════════════════════
-function toggleMic(){
-  if(!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)){
-    alert("Voice input requires Chrome."); return;
+// ── TTS ───────────────────────────────────────────────────────
+function speak(text){
+  if(!document.getElementById("tts-tog").checked){
+    setOrbState("idle");
+    setOrbStatus("Say \"Hey Claude\" or tap the orb");
+    setTimeout(startWake,300);
+    return;
   }
-  if(isRecording){ stopMic(); return; }
-  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SR();
-  recognition.lang = "en-US";
-  recognition.interimResults = true;
-  recognition.continuous = false;
-  isRecording = true;
-  document.getElementById("mic-btn").classList.add("on");
-
-  recognition.onresult = function(e){
-    var t = "";
-    for(var i=0;i<e.results.length;i++) t += e.results[i][0].transcript;
-    var ta = document.getElementById("ta");
-    ta.value = t; taResize(ta);
-    setSend(!!t.trim());
+  speechSynthesis.cancel();
+  var utt = new SpeechSynthesisUtterance(text);
+  utt.rate=1.05; utt.pitch=1.0;
+  var voices=speechSynthesis.getVoices();
+  var pick=voices.find(function(v){
+    return v.name.includes("Google")||v.name.includes("Samantha")||(v.lang==="en-US"&&v.localService);
+  });
+  if(pick)utt.voice=pick;
+  setOrbState("speaking");
+  setOrbStatus("Speaking...");
+  utt.onend=utt.onerror=function(){
+    setOrbState("idle");
+    setOrbStatus("Say \"Hey Claude\" or tap the orb");
+    setTimeout(startWake,400);
   };
-  recognition.onerror = function(e){
-    stopMic();
-    if(e.error==="not-allowed") alert("Microphone access blocked. Click the 🔒 in your address bar and allow mic.");
+  speechSynthesis.speak(utt);
+}
+
+// ── Orb state ─────────────────────────────────────────────────
+function setOrbState(s){
+  vState=s;
+  var orb=document.getElementById("orb");
+  orb.className="orb "+s;
+  var icons={idle:"🎙",wake:"🎙",listening:"🎙",ptt:"🎙",thinking:"⏳",speaking:"🔊",error:"⚠️"};
+  orb.textContent=icons[s]||"🎙";
+}
+function setOrbStatus(msg){document.getElementById("orb-status").textContent=msg;}
+function setOrbTranscript(t,live){
+  var el=document.getElementById("orb-transcript");
+  el.textContent=t; el.className="orb-transcript"+(live?" live":"");
+}
+
+// ── Wake word ─────────────────────────────────────────────────
+function startWake(){
+  if(!wakeEnabled||["listening","ptt","thinking","speaking"].includes(vState))return;
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  wakeRec=new SR();
+  wakeRec.continuous=true; wakeRec.interimResults=true; wakeRec.lang="en-US";
+  wakeRec.onresult=function(e){
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      var t=e.results[i][0].transcript.trim().toLowerCase();
+      if(WAKE.some(function(w){return t.includes(w);})){
+        wakeRec.stop(); startListening(); return;
+      }
+    }
   };
-  recognition.onend = function(){ stopMic(); };
-  recognition.start();
+  wakeRec.onerror=function(e){
+    if(e.error==="not-allowed"){setOrbStatus("Mic blocked — click 🔒 in address bar");setOrbState("error");return;}
+    if(e.error!=="aborted"&&e.error!=="no-speech")setTimeout(startWake,2000);
+  };
+  wakeRec.onend=function(){
+    if(vState==="idle"||vState==="wake")setTimeout(startWake,400);
+  };
+  try{wakeRec.start();setOrbState("wake");setOrbStatus("Say \"Hey Claude\" or tap the orb");}catch(x){}
 }
 
-function stopMic(){
-  isRecording = false;
-  document.getElementById("mic-btn").classList.remove("on");
-  if(recognition){ try{recognition.stop();}catch(e){} recognition=null; }
+function toggleWake(on){
+  wakeEnabled=on;
+  if(!on&&wakeRec)try{wakeRec.stop();}catch(e){}
+  else if(on&&(vState==="idle"||vState==="wake"))startWake();
 }
 
-// ══════════════════════════════════════
-//  CHAT UI HELPERS
-// ══════════════════════════════════════
-function addBubble(role, text){
-  var chat = document.getElementById("chat");
-  var row  = document.createElement("div");
-  row.className = "row " + (role==="user"?"user":"");
-  var av = document.createElement("div");
-  av.className = "av " + (role==="user"?"user":"ai");
-  av.textContent = role==="user" ? "D" : "✦";
-  var bub = document.createElement("div");
-  bub.className = "bubble " + (role==="user"?"user":"ai");
-  bub.textContent = text;
-  row.appendChild(av); row.appendChild(bub);
-  chat.appendChild(row);
-  chat.scrollTop = chat.scrollHeight;
+// ── Push-to-talk ──────────────────────────────────────────────
+function setupPTT(){
+  document.addEventListener("keydown",function(e){
+    if(e.code!=="Space")return;
+    if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+    if(spaceHeld||["thinking","speaking"].includes(vState))return;
+    e.preventDefault();
+    spaceHeld=true; spaceReleased=false;
+    if(wakeRec)try{wakeRec.stop();}catch(x){}
+    startListening();
+    setOrbState("ptt");
+    setOrbStatus("Hold Space and speak...");
+  });
+  document.addEventListener("keyup",function(e){
+    if(e.code!=="Space"||!spaceHeld)return;
+    if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+    e.preventDefault();
+    spaceHeld=false; spaceReleased=true;
+    // If we have text already, shorten silence to 600ms
+    if(captured.trim()){
+      clearTimeout(silTimer);
+      silTimer=setTimeout(submitCaptured,600);
+    }
+    // If no text yet: keep recording, silence detection will submit when they speak
+  });
 }
 
+// ── Main recognition ──────────────────────────────────────────
+function startListening(){
+  captured=""; spaceReleased=false;
+  clearTimeout(silTimer);
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  mainRec=new SR();
+  mainRec.lang="en-US";
+  mainRec.interimResults=true;
+  mainRec.continuous=true; // never auto-stops
+  mainRec.maxAlternatives=1;
+  if(!spaceHeld){
+    setOrbState("listening");
+    setOrbStatus("Listening...");
+  }
+  setOrbTranscript("",false);
+
+  mainRec.onresult=function(e){
+    var interim=""; captured="";
+    for(var i=0;i<e.results.length;i++){
+      if(e.results[i].isFinal)captured+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    setOrbTranscript(captured||interim,true);
+    if(captured){
+      clearTimeout(silTimer);
+      var delay=spaceReleased?600:1500;
+      silTimer=setTimeout(submitCaptured,delay);
+    }
+  };
+
+  mainRec.onerror=function(e){
+    clearTimeout(silTimer);
+    if(e.error==="aborted")return;
+    if(e.error==="not-allowed"){
+      setOrbStatus("Mic blocked — click 🔒 in address bar");
+      setOrbState("error"); return;
+    }
+    if(e.error==="no-speech"){
+      stopMainRec();
+      if(spaceHeld){setTimeout(startListening,150);}
+      else{setOrbState("idle");setOrbStatus("Say \"Hey Claude\" or tap the orb");setTimeout(startWake,400);}
+      return;
+    }
+    setOrbState("error");setOrbStatus("Mic error: "+e.error);
+    setTimeout(function(){setOrbState("idle");setOrbStatus("Say \"Hey Claude\" or tap the orb");startWake();},2500);
+  };
+  mainRec.onend=function(){};
+  try{mainRec.start();}
+  catch(e){setOrbStatus("Could not access microphone");}
+}
+
+function stopMainRec(){
+  clearTimeout(silTimer);
+  if(mainRec){try{mainRec.stop();}catch(x){}mainRec=null;}
+}
+
+function submitCaptured(){
+  stopMainRec();
+  var cleaned=captured.trim()
+    .replace(/^(hey claude|hey clod|hey cloud|hey cloth|hey assistant),?\s*/i,"")
+    .trim();
+  setOrbTranscript("",false);
+  if(cleaned){
+    processMessage(cleaned);
+  } else {
+    setOrbState("idle");
+    setOrbStatus("Say \"Hey Claude\" or tap the orb");
+    setTimeout(startWake,400);
+  }
+}
+
+function orbClick(){
+  if(["idle","wake"].includes(vState)){
+    if(wakeRec)try{wakeRec.stop();}catch(x){}
+    startListening();
+  } else if(["listening","ptt"].includes(vState)){
+    submitCaptured();
+  } else if(vState==="speaking"){
+    speechSynthesis.cancel();
+    setOrbState("idle");
+    setOrbStatus("Say \"Hey Claude\" or tap the orb");
+    setTimeout(startWake,300);
+  }
+}
+
+// ── Text input ────────────────────────────────────────────────
+function sendText(){
+  var ta=document.getElementById("ta");
+  var text=ta.value.trim();
+  if(!text||isBusy)return;
+  ta.value=""; taResize(ta);
+  processMessage(text);
+}
+
+function taKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendText();}}
+function taResize(el){
+  el.style.height="auto";el.style.height=el.scrollHeight+"px";
+  document.getElementById("send-btn").disabled=!el.value.trim()||isBusy;
+}
+function useSug(btn){
+  var ta=document.getElementById("ta");
+  ta.value=btn.textContent; taResize(ta); sendText();
+}
+
+// ── Connection test ───────────────────────────────────────────
+function testConn(){
+  var el=document.getElementById("conn-status");
+  var dot=document.getElementById("conn-dot");
+  el.textContent="Testing..."; dot.className="conn-dot";
+  scriptCall("getAccountsForUI",{},function(d){
+    el.textContent="✓ Connected · "+((d.google||[]).length)+" Google, "+((d.notion||[]).length)+" Notion";
+    dot.className="conn-dot ok";
+    if(d.google){googleAccounts=d.google;lsSet("google_accounts",JSON.stringify(googleAccounts));initSettings();}
+  },function(err){
+    el.textContent="✗ "+err; dot.className="conn-dot err";
+  });
+}
+
+// ── Chat UI ───────────────────────────────────────────────────
+function addBubble(role,text){
+  var chat=document.getElementById("chat");
+  var row=document.createElement("div");
+  row.className="row "+(role==="user"?"user":"");
+  var av=document.createElement("div");
+  av.className="av "+(role==="user"?"user":"ai");
+  av.textContent=role==="user"?"D":"✦";
+  var bub=document.createElement("div");
+  bub.className="bubble "+(role==="user"?"user":"ai");
+  bub.textContent=text;
+  row.appendChild(av);row.appendChild(bub);
+  chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
+}
 function addTyping(){
-  var chat = document.getElementById("chat");
-  var row  = document.createElement("div");
-  row.className = "row";
-  var av = document.createElement("div");
-  av.className = "av ai"; av.textContent = "✦";
-  var bub = document.createElement("div");
-  bub.className = "bubble ai";
-  bub.innerHTML = '<div class="typing"><b></b><b></b><b></b></div>';
-  row.appendChild(av); row.appendChild(bub);
-  chat.appendChild(row);
-  chat.scrollTop = chat.scrollHeight;
+  var chat=document.getElementById("chat");
+  var row=document.createElement("div"); row.className="row";
+  var av=document.createElement("div"); av.className="av ai"; av.textContent="✦";
+  var bub=document.createElement("div"); bub.className="bubble ai";
+  bub.innerHTML='<div class="typing"><b></b><b></b><b></b></div>';
+  row.appendChild(av);row.appendChild(bub);
+  chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
   return row;
 }
-
-function removeTyping(el){if(el && el.parentNode) el.parentNode.removeChild(el);}
-
-function addSysMsg(text){
-  var chat = document.getElementById("chat");
-  var row  = document.createElement("div");
-  row.className = "row center";
-  var bub = document.createElement("div");
-  bub.className = "bubble sys"; bub.textContent = text;
-  row.appendChild(bub); chat.appendChild(row);
-  chat.scrollTop = chat.scrollHeight;
+function removeTyping(el){if(el&&el.parentNode)el.parentNode.removeChild(el);}
+function addSys(text){
+  var chat=document.getElementById("chat");
+  var row=document.createElement("div");row.className="row center";
+  var b=document.createElement("div");b.className="bubble sys";b.textContent=text;
+  row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
 }
-
-function hideEmpty(){
-  var el = document.getElementById("empty-state");
-  if(el) el.style.display = "none";
-}
-
-function setSend(busy){
-  isBusy = busy;
-  document.getElementById("send-btn").disabled = busy || !document.getElementById("ta").value.trim();
-}
-
+function hideEmpty(){var el=document.getElementById("empty");if(el)el.style.display="none";}
 function clearChat(){
-  chatHistory = [];
-  var chat = document.getElementById("chat");
-  chat.innerHTML = "";
-  var empty = document.createElement("div");
-  empty.id = "empty-state";
-  empty.className = "empty";
-  empty.innerHTML = '<div class="empty-icon">✦</div>'
-    + '<div class="empty-title">Ask me anything about your data</div>'
-    + '<div class="empty-sub">I can read your Notion tasks, Google Calendar, Tasks, Drive and Gmail.</div>'
-    + '<div class="sugs">'
-    + '<button class="sug" onclick="useSug(this)">What are my tasks today?</button>'
-    + '<button class="sug" onclick="useSug(this)">What\'s on my calendar this week?</button>'
-    + '<button class="sug" onclick="useSug(this)">Any unread emails?</button>'
-    + '<button class="sug" onclick="useSug(this)">Summarize my Notion database</button>'
-    + '</div>';
-  chat.appendChild(empty);
+  chatHistory=[];isBusy=false;
+  var chat=document.getElementById("chat");
+  chat.innerHTML='<div class="empty" id="empty">'
+    +'<div class="empty-icon">✦</div>'
+    +'<div class="empty-title">Say "Hey Claude" or tap the orb</div>'
+    +'<div class="empty-sub">I can see your Notion tasks, Calendar, Google Tasks, Drive and Gmail.</div>'
+    +'<div class="sugs">'
+    +'<button class="sug" onclick="useSug(this)">What are my tasks today?</button>'
+    +'<button class="sug" onclick="useSug(this)">What\'s on my calendar?</button>'
+    +'<button class="sug" onclick="useSug(this)">Any unread emails?</button>'
+    +'<button class="sug" onclick="useSug(this)">Summarize my Notion database</button>'
+    +'</div></div>';
 }
 
-function useSug(btn){
-  document.getElementById("ta").value = btn.textContent;
-  taResize(document.getElementById("ta"));
-  setSend(false);
-  sendMsg();
-}
-
-function taKey(e){
-  if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); sendMsg(); }
-}
-function taResize(el){
-  el.style.height="auto"; el.style.height=el.scrollHeight+"px";
-  document.getElementById("send-btn").disabled = !el.value.trim() || isBusy;
-}
-
-// ══════════════════════════════════════
-//  CONTEXT PILLS
-// ══════════════════════════════════════
-function renderCtxPills(){
-  var row = document.getElementById("ctx-row");
-  row.innerHTML = '<span class="ctx-label">Context:</span>';
-  var all = googleAccounts.concat([]);
-  if(!all.length && !notionWorkspaces.length){
-    row.innerHTML += '<span style="font-size:11px;color:#2a2a2a">Add accounts in Settings →</span>';
+// ── Context pills ─────────────────────────────────────────────
+function renderCtx(){
+  var row=document.getElementById("ctx-row");
+  row.innerHTML='<span class="ctx-lbl">Context:</span>';
+  if(!googleAccounts.length&&!notionWorkspaces.length){
+    row.innerHTML+='<span style="font-size:11px;color:#1e1e1e">Add accounts in Settings →</span>';
     return;
   }
   googleAccounts.forEach(function(a){
-    var on = activeGoogle.indexOf(a.id)!==-1;
-    var p = document.createElement("div");
-    p.className = "pill"+(on?" on":"");
-    p.innerHTML = '<div class="dot"></div><span>'+(a.email||a.id).split("@")[0]+'</span>';
-    p.title = a.email||a.id;
-    p.onclick = function(){
+    var on=activeGoogle.indexOf(a.id)!==-1;
+    var p=document.createElement("div");
+    p.className="pill"+(on?" on":"");
+    p.innerHTML='<div class="dot"></div><span>'+(a.email||a.id).split("@")[0]+'</span>';
+    p.title=a.email||a.id;
+    p.onclick=function(){
       var i=activeGoogle.indexOf(a.id);
       if(i>=0)activeGoogle.splice(i,1);else activeGoogle.push(a.id);
-      renderCtxPills();
+      renderCtx();
     };
     row.appendChild(p);
   });
   notionWorkspaces.forEach(function(w){
-    var on = activeNotion.indexOf(w.id)!==-1;
-    var p = document.createElement("div");
-    p.className = "pill notion"+(on?" on":"");
-    p.innerHTML = '<div class="dot"></div><span>'+w.name+'</span>';
-    p.onclick = function(){
+    var on=activeNotion.indexOf(w.id)!==-1;
+    var p=document.createElement("div");
+    p.className="pill notion"+(on?" on":"");
+    p.innerHTML='<div class="dot"></div><span>'+w.name+'</span>';
+    p.onclick=function(){
       var i=activeNotion.indexOf(w.id);
       if(i>=0)activeNotion.splice(i,1);else activeNotion.push(w.id);
-      renderCtxPills();
+      renderCtx();
     };
     row.appendChild(p);
   });
 }
 
-// ══════════════════════════════════════
-//  SETTINGS
-// ══════════════════════════════════════
+// ── Settings panel ────────────────────────────────────────────
 function renderNotionList(){
-  var el = document.getElementById("notion-list");
-  el.innerHTML = notionWorkspaces.length
-    ? notionWorkspaces.map(function(w){
-        return '<div class="nrow"><span class="nbadge">Notion</span>'
-          +'<span class="nname">'+w.name+'</span>'
-          +'<button class="rbtn" onclick="removeNotion(\''+w.id+'\')">Remove</button></div>';
-      }).join("")
-    : '<span style="font-size:11px;color:#333">No workspaces added</span>';
+  var el=document.getElementById("notion-list");
+  el.innerHTML=notionWorkspaces.length
+    ?notionWorkspaces.map(function(w){
+      return'<div class="nrow"><span class="nbadge">Notion</span>'
+        +'<span class="nname">'+w.name+'</span>'
+        +'<button class="rbtn" onclick="removeNotion(\''+w.id+'\')">Remove</button></div>';
+    }).join("")
+    :'<span style="font-size:11px;color:#2a2a2a">No workspaces added</span>';
 }
-
 function renderGoogleList(){
-  var el = document.getElementById("google-list");
-  el.innerHTML = googleAccounts.length
-    ? googleAccounts.map(function(a){
-        return '<div class="nrow">'
-          +'<span class="nbadge" style="background:#0d1f3a;color:#4a9eff;border-color:#1a3a5a">Google</span>'
-          +'<span class="nname">'+(a.email||a.id)+'</span>'
-          +(a.id==="primary"
-            ?'<span style="font-size:10px;color:#333">primary</span>'
-            :'<button class="rbtn" onclick="removeGoogle(\''+a.id+'\')">Remove</button>')
-          +'</div>';
-      }).join("")
-    : '<span style="font-size:11px;color:#333">Set Apps Script URL then test connection to see your primary account</span>';
+  var el=document.getElementById("google-list");
+  el.innerHTML=googleAccounts.length
+    ?googleAccounts.map(function(a){
+      return'<div class="nrow"><span class="gbadge">Google</span>'
+        +'<span class="nname">'+(a.email||a.id)+'</span>'
+        +(a.id==="primary"
+          ?'<span style="font-size:10px;color:#2a2a2a">primary</span>'
+          :'<button class="rbtn" onclick="removeGoogle(\''+a.id+'\')">Remove</button>')
+        +'</div>';
+    }).join("")
+    :'<span style="font-size:11px;color:#2a2a2a">Test connection first to see your primary account</span>';
 }
 
 function addGoogle(){
-  if(!SCRIPT_URL){alert("Set Apps Script URL in Settings and test connection first.");return;}
+  if(!SCRIPT_URL){alert("Set and test your Apps Script URL first.");return;}
   scriptCall("startGoogleOAuth",{},function(r){
     var p=window.open(r.url,"_blank","width=500,height=600,left=200,top=100");
     if(!p)alert("Allow popups for this page.");
   },function(e){alert("Error: "+e);});
 }
-
 function removeGoogle(id){
   if(!confirm("Remove this account?"))return;
   scriptCall("removeGoogleAccount",{accountId:id},function(){
     googleAccounts=googleAccounts.filter(function(a){return a.id!==id;});
     activeGoogle=activeGoogle.filter(function(i){return i!==id;});
     lsSet("google_accounts",JSON.stringify(googleAccounts));
-    init();
+    initSettings();
   });
 }
-
 function showNForm(){document.getElementById("notion-form").style.display="flex";document.getElementById("add-notion-btn").style.display="none";}
 function hideNForm(){document.getElementById("notion-form").style.display="none";document.getElementById("add-notion-btn").style.display="flex";document.getElementById("nf-status").textContent="";}
-
 function saveNotion(){
-  var name  = document.getElementById("nf-name").value.trim();
-  var token = document.getElementById("nf-token").value.trim();
-  var raw   = document.getElementById("nf-dbid").value.trim();
-  var dbId  = raw.replace(/.*?([a-f0-9]{32}).*/i,"$1");
-  var tp    = document.getElementById("nf-tp").value.trim()||"Name";
+  var name=document.getElementById("nf-name").value.trim();
+  var token=document.getElementById("nf-token").value.trim();
+  var dbId=document.getElementById("nf-dbid").value.trim().replace(/.*?([a-f0-9]{32}).*/i,"$1");
+  var tp=document.getElementById("nf-tp").value.trim()||"Name";
   if(!name||!token||!dbId){document.getElementById("nf-status").textContent="Fill all fields.";return;}
   var btn=document.getElementById("nf-save");btn.disabled=true;
   document.getElementById("nf-status").textContent="Testing...";
@@ -697,21 +793,18 @@ function saveNotion(){
       var ws={id:"ws_"+Date.now(),name:name,token:token,dbId:dbId,titleProp:tp};
       notionWorkspaces.push(ws);
       lsSet("notion_workspaces",JSON.stringify(notionWorkspaces));
-      init(); hideNForm();
-      addSysMsg('Notion "'+name+'" connected ✓');
+      initSettings();hideNForm();addSys('Notion "'+name+'" connected ✓');
     }else{document.getElementById("nf-status").textContent="Failed: "+(r.error||"unknown");}
     btn.disabled=false;
   },function(e){document.getElementById("nf-status").textContent="Error: "+e;btn.disabled=false;});
 }
-
 function removeNotion(id){
-  if(!confirm("Remove this workspace?"))return;
+  if(!confirm("Remove?"))return;
   notionWorkspaces=notionWorkspaces.filter(function(w){return w.id!==id;});
   activeNotion=activeNotion.filter(function(i){return i!==id;});
   lsSet("notion_workspaces",JSON.stringify(notionWorkspaces));
-  init();
+  initSettings();
 }
-
 function openPanel(){document.getElementById("panel").classList.add("open");}
 function closePanel(){document.getElementById("panel").classList.remove("open");}
 function bgClick(e){if(e.target===document.getElementById("panel"))closePanel();}
