@@ -270,8 +270,8 @@ function ls(k){try{return localStorage.getItem("nai2_"+k)||""}catch(e){return""}
 function lsSet(k,v){try{localStorage.setItem("nai2_"+k,v)}catch(e){}}
 function saveSetting(k,v){lsSet(k,v.trim());initSettings();}
 
-var SCRIPT_URL       = "";
-var GEMINI_KEY       = "";
+var SCRIPT_URL       = "https://script.google.com/macros/s/AKfycbxEYlGSJTTGJa7SCkyxJBkWxWZWMMkIgmxw0IfAOrlUNrycobKm3pwH9wvrmUF5gEl_Yg/exec";
+var GEMINI_KEY       = "AIzaSyA8MYqPJ2vw64FJh_iZC7MNE74SGON7SNE";
 var notionWorkspaces = [];
 var googleAccounts   = [];
 var activeNotion     = [];
